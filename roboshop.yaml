@@ -9,17 +9,41 @@
     - mongodb
     - catalogue
   tasks:
-  - name: create ec2_instance
-    amazon.aws.ec2_instance:
-      instance_type: t3.micro
-      security_group: "{{ sg_id }}"
-      image_id: "{{ image_id}}"
-      name: {{ item }}-{{ env }}
-      tag: 
-        Project: roboshop
-        Environment: {{ env }}
-        Name: {{ item }}-{{ env }}
-    loop: {{ instances }}
-    reguster: ec2_output
+   - name: create ec2_instance
+     amazon.aws.ec2_instance:
+       instance_type: t3.micro
+       security_group: "{{ sg_id }}"
+       image_id: "{{ image_id}}"
+       name: "{{ item }}-{{ env }}"
+       tag: 
+         Project: roboshop
+         Environment: "{{ env }}"
+         Name: "{{ item }}-{{ env }}"
+     loop: "{{ instances }}"
+     reguster: ec2_output
 
-      
+# - name: create ec2 and r53 records
+#   hosts: all
+#   connection: local
+
+#   vars:
+#     sg_id: sg-0eecd105120308fa3
+#     image_id: ami-0055977a6e828a4f4
+#     env: dev
+#     instances:
+#       - mongodb
+#       - catalogue
+
+#   tasks:
+#     - name: create ec2_instance
+#       amazon.aws.ec2_instance:
+#         instance_type: t3.micro
+#         security_group: "{{ sg_id }}"
+#         image_id: "{{ image_id }}"
+#         name: "{{ item }}-{{ env }}"
+#         tags:
+#           Project: roboshop
+#           Environment: "{{ env }}"
+#           Name: "{{ item }}-{{ env }}"
+#       loop: "{{ instances }}"
+#       register: ec2_output
